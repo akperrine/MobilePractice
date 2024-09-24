@@ -12,6 +12,6 @@ public class PracticeContext : DbContext {
 //     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //         => optionsBuilder.UseNpgsql("Host=localhost;Database=practice-db;Username=postgres;Password=postgres>");
       
-      public DbSet<User> Users {get; set;}
+      public DbSet<Practitioner> Practitioners {get; set;}
 }
 
