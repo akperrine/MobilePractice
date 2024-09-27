@@ -13,5 +13,8 @@ public class PracticeContext : DbContext {
 //         => optionsBuilder.UseNpgsql("Host=localhost;Database=practice-db;Username=postgres;Password=postgres>");
       
       public DbSet<Practitioner> Practitioners {get; set;}
+      public DbSet<Client> Clients {get; set;}
+      public DbSet<Service> Services {get; set;}
+      public DbSet<Appointment> Appointments {get; set;}
 }
 
