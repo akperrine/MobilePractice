@@ -14,7 +14,7 @@ public class PracticeContext : DbContext {
       
       public DbSet<Practitioner> Practitioners {get; set;}
       public DbSet<Client> Clients {get; set;}
-      public DbSet<Service> Services {get; set;}
+      public DbSet<Treatment> Treatments {get; set;}
       public DbSet<Appointment> Appointments {get; set;}
 }
 
