@@ -1,4 +1,6 @@
 
+using Microsoft.AspNetCore.Mvc;
+using BCrypt.Net;
 using MobilePractice.Data;
 using MobilePractice.Models;
 
@@ -11,5 +13,15 @@ public class PractitionerService {
     }
 
     public List<Practitioner> GetAll() => _context.Practitioners.ToList();
- 
+
+    public ActionResult<Practitioner> RegisterUser(Practitioner practitionerDto) {
+        Practitioner newPractitioner = new Practitioner {
+            FirstName = practitionerDto.FirstName,
+            LastName = practitionerDto.LastName,
+            Email = practitionerDto.Email
+            // Password
+        };
+
+        return newPractitioner;
+    }
 }

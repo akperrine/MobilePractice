@@ -5,6 +5,7 @@ public class Practitioner {
     public string? FirstName { get; set; }
     public string? LastName { get; set;}
     public string? Email { get; set;}
+    public string? Password { get; set;}
     public DateTime StartDate { get; set;}
     public int Earnings { get; set;}
     public string? Address { get; set;}
