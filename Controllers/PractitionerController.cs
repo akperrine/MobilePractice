@@ -16,32 +16,32 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpGet]
-    public ActionResult<List<Practitioner>> GetAllPractitioners() {
-         return practitionerService.GetAll();
+    public async Task<ActionResult<List<Practitioner>>> GetAllPractitioners() {
+         return await practitionerService.GetAll();
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Practitioner> GetPractionerById() {
+    public async Task<ActionResult<Practitioner>> GetPractionerById() {
         throw new NotImplementedException();
     }
 
     [HttpPost("/login")]
-    public ActionResult<PractionerDto> LoginUser([FromBody] LoginDto loginCredentials) {
-        return practitionerService.Login(loginCredentials);
+    public async Task<ActionResult<PractionerDto>> LoginUser([FromBody] LoginDto loginCredentials) {
+        return await practitionerService.Login(loginCredentials);
     }
 
     [HttpPost("/register")]
-    public ActionResult<Practitioner> CreateUser([FromBody] Practitioner practitioner) {
-        return practitionerService.RegisterUser(practitioner);
+    public async Task<ActionResult<Practitioner>> CreateUser([FromBody] Practitioner practitioner) {
+        return await practitionerService.RegisterUser(practitioner);
     }
 
     [HttpPut]
-    public ActionResult<Practitioner> UpdateUser() {
+    public async Task<ActionResult<Practitioner>> UpdateUser() {
         throw new NotImplementedException();
     }
 
     [HttpDelete]
-    public ActionResult<Practitioner> DeleteUser() {
+    public async Task<ActionResult<Practitioner>> DeleteUser() {
         throw new NotImplementedException();
     }
 }

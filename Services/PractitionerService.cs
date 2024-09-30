@@ -5,6 +5,7 @@ using MobilePractice.Data;
 using MobilePractice.Models;
 using BCrypt.Net;
 using MobilePractice.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace MobilePractice.Services;
 public class PractitionerService {
@@ -14,9 +15,9 @@ public class PractitionerService {
         _context = context;
     }
 
-    public List<Practitioner> GetAll() => _context.Practitioners.ToList();
+    public async Task<ActionResult<List<Practitioner>>> GetAll() => await _context.Practitioners.ToListAsync();
 
-    public ActionResult<Practitioner> RegisterUser(Practitioner practitionerDto) {
+    public async Task<ActionResult<Practitioner>> RegisterUser(Practitioner practitionerDto) {
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(practitionerDto.Password);
         DateTime timestamp = DateTime.UtcNow;
         Practitioner newPractitioner = new Practitioner {
@@ -27,13 +28,13 @@ public class PractitionerService {
             StartDate = timestamp
         };
 
-        _context.Add(newPractitioner);
-        _context.SaveChanges();
+        await _context.AddAsync(newPractitioner);
+        await _context.SaveChangesAsync();
 
         return newPractitioner;
     }
 
-    public ActionResult<PractionerDto> Login(LoginDto credentials) {
+    public async Task<ActionResult<PractionerDto>> Login(LoginDto credentials) {
         PractionerDto practioner = new PractionerDto {};
         return practioner;
     }
