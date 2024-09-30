@@ -27,7 +27,11 @@ public class PractitionerController : ControllerBase {
 
     [HttpPost("/login")]
     public async Task<ActionResult<PractionerDto>> LoginUser([FromBody] LoginDto loginCredentials) {
-        return await practitionerService.Login(loginCredentials);
+        var result = await practitionerService.Login(loginCredentials);
+        if (result == null) {
+            return Unauthorized();
+        }
+        return Ok(result);
     }
 
     [HttpPost("/register")]
