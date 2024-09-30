@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using MobilePractice.Dtos;
 using MobilePractice.Models;
 using MobilePractice.Services;
 
@@ -24,9 +25,9 @@ public class PractitionerController : ControllerBase {
         throw new NotImplementedException();
     }
 
-    [HttpGet("/login")]
-    public ActionResult<Practitioner> LoginUser() {
-        throw new NotImplementedException();
+    [HttpPost("/login")]
+    public ActionResult<PractionerDto> LoginUser([FromBody] LoginDto loginCredentials) {
+        return practitionerService.Login(loginCredentials);
     }
 
     [HttpPost("/register")]

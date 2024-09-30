@@ -4,6 +4,7 @@ using BCrypt;
 using MobilePractice.Data;
 using MobilePractice.Models;
 using BCrypt.Net;
+using MobilePractice.Dtos;
 
 namespace MobilePractice.Services;
 public class PractitionerService {
@@ -30,5 +31,10 @@ public class PractitionerService {
         _context.SaveChanges();
 
         return newPractitioner;
+    }
+
+    public ActionResult<PractionerDto> Login(LoginDto credentials) {
+        PractionerDto practioner = new PractionerDto {};
+        return practioner;
     }
 }
