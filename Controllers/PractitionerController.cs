@@ -19,17 +19,17 @@ public class PractitionerController : ControllerBase {
          return practitionerService.GetAll();
     }
 
-    [HttpGet]
+    [HttpGet("{id}")]
     public ActionResult<Practitioner> GetPractionerById() {
         throw new NotImplementedException();
     }
 
-    [HttpGet]
+    [HttpGet("/login")]
     public ActionResult<Practitioner> LoginUser() {
         throw new NotImplementedException();
     }
 
-    [HttpPost]
+    [HttpPost("/register")]
     public ActionResult<Practitioner> CreateUser([FromBody] Practitioner practitioner) {
         return practitionerService.RegisterUser(practitioner);
     }
