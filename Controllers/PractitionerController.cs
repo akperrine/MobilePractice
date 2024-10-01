@@ -52,8 +52,12 @@ public class PractitionerController : ControllerBase {
         return Ok(result);
     }
 
-    [HttpDelete]
-    public async Task<ActionResult<Practitioner>> DeleteUser() {
-        throw new NotImplementedException();
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Practitioner>> DeleteUser(long id) {
+        var result = await practitionerService.DeleteUser(id);
+        if (result == null) {
+            return BadRequest();
+        }
+        return Ok(result);
     }
 }

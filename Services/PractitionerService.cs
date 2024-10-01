@@ -93,4 +93,24 @@ public class PractitionerService {
 
         return practionerDto;
     }
+
+    public async Task<PractionerDto?> DeleteUser(long id) {
+        var practioner = await _context.Practitioners.SingleAsync(prac => prac.Id == id);
+        _context.Practitioners.Remove(practioner);
+        await _context.SaveChangesAsync();
+
+        PractionerDto practionerDto = new PractionerDto {
+            Id = practioner.Id,
+            FirstName = practioner.FirstName,
+            LastName = practioner.LastName,
+            Email = practioner.Email,
+            StartDate = practioner.StartDate,
+            Earnings = practioner.Earnings,
+            Address = practioner.Address,
+            Latitude = practioner.Latitude,
+            Longitude = practioner.Longitude,
+        };
+
+        return practionerDto;
+    }
 }
