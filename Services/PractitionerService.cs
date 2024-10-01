@@ -16,9 +16,17 @@ public class PractitionerService {
         _context = context;
     }
 
-    public async Task<ActionResult<List<Practitioner>>> GetAll() => await _context.Practitioners.ToListAsync();
+    public async Task<List<Practitioner>> GetAll() => await _context.Practitioners.ToListAsync();
 
-    public async Task<ActionResult<Practitioner>> RegisterUser(Practitioner practitionerDto) {
+    public async Task<PractionerDto?> RegisterUser(Practitioner practitionerDto) {
+        var existingPractioner = await _context.Practitioners.Where(prac => prac.Email == practitionerDto.Email).FirstOrDefaultAsync();
+                Console.WriteLine("checking email");
+
+        if (existingPractioner != null) {
+            return null;
+        };
+                Console.WriteLine("passed email");
+
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(practitionerDto.Password);
         DateTime timestamp = DateTime.UtcNow;
         Practitioner newPractitioner = new Practitioner {
@@ -28,11 +36,24 @@ public class PractitionerService {
             Password = hashedPassword,
             StartDate = timestamp
         };
-
+        Console.WriteLine("hit");
         await _context.AddAsync(newPractitioner);
         await _context.SaveChangesAsync();
 
-        return newPractitioner;
+        PractionerDto newPractitionerDto = new PractionerDto {
+            Id = newPractitioner.Id,
+            FirstName = newPractitioner.FirstName,
+            LastName = newPractitioner.LastName,
+            Email = newPractitioner.Email,
+            StartDate = newPractitioner.StartDate,
+            Earnings = newPractitioner.Earnings,
+            Address = newPractitioner.Address,
+            Latitude = newPractitioner.Latitude,
+            Longitude = newPractitioner.Longitude,
+        };
+        Console.WriteLine("hit3");
+
+        return newPractitionerDto;
     }
 
     public async Task<PractionerDto?> Login(LoginDto credentials) {

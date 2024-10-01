@@ -35,8 +35,14 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPost("/register")]
-    public async Task<ActionResult<Practitioner>> CreateUser([FromBody] Practitioner practitioner) {
-        return await practitionerService.RegisterUser(practitioner);
+    public async Task<ActionResult<PractionerDto>> CreateUser([FromBody] Practitioner practitioner) {
+        Console.WriteLine("hit start");
+        var result = await practitionerService.RegisterUser(practitioner);
+        Console.WriteLine("checking email");
+        if (result == null) {
+            return BadRequest();
+        }
+        return Ok(result);
     }
 
     [HttpPut]
