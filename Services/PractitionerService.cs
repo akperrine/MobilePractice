@@ -74,4 +74,23 @@ public class PractitionerService {
         };
         return practionerDto;
     }
+
+    public async Task<PractionerDto?> UpdateUser(Practitioner practionerData) {
+        _context.Practitioners.Update(practionerData);
+        await _context.SaveChangesAsync();
+
+        PractionerDto practionerDto = new PractionerDto {
+            Id = practionerData.Id,
+            FirstName = practionerData.FirstName,
+            LastName = practionerData.LastName,
+            Email = practionerData.Email,
+            StartDate = practionerData.StartDate,
+            Earnings = practionerData.Earnings,
+            Address = practionerData.Address,
+            Latitude = practionerData.Latitude,
+            Longitude = practionerData.Longitude,
+        };
+
+        return practionerDto;
+    }
 }

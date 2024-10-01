@@ -44,8 +44,12 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPut]
-    public async Task<ActionResult<Practitioner>> UpdateUser() {
-        throw new NotImplementedException();
+    public async Task<ActionResult<PractionerDto>> UpdateUser([FromBody] Practitioner practitioner) {
+        var result = await practitionerService.UpdateUser(practitioner);
+        if (result == null) {
+            return BadRequest();
+        }
+        return Ok(result);
     }
 
     [HttpDelete]
