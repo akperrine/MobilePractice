@@ -20,12 +20,10 @@ public class PractitionerService {
 
     public async Task<PractionerDto?> RegisterUser(Practitioner practitionerDto) {
         var existingPractioner = await _context.Practitioners.Where(prac => prac.Email == practitionerDto.Email).FirstOrDefaultAsync();
-                Console.WriteLine("checking email");
 
         if (existingPractioner != null) {
             return null;
         };
-                Console.WriteLine("passed email");
 
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(practitionerDto.Password);
         DateTime timestamp = DateTime.UtcNow;
@@ -36,7 +34,6 @@ public class PractitionerService {
             Password = hashedPassword,
             StartDate = timestamp
         };
-        Console.WriteLine("hit");
         await _context.AddAsync(newPractitioner);
         await _context.SaveChangesAsync();
 
@@ -51,7 +48,6 @@ public class PractitionerService {
             Latitude = newPractitioner.Latitude,
             Longitude = newPractitioner.Longitude,
         };
-        Console.WriteLine("hit3");
 
         return newPractitionerDto;
     }
