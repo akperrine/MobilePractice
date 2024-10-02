@@ -1,12 +1,9 @@
-
-using Microsoft.AspNetCore.Mvc;
-using BCrypt;
 using MobilePractice.Data;
 using MobilePractice.Models;
 using BCrypt.Net;
 using MobilePractice.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.HttpResults;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MobilePractice.Services;
 public class PractitionerService {
@@ -18,7 +15,18 @@ public class PractitionerService {
 
     public async Task<List<Practitioner>> GetAll() => await _context.Practitioners.ToListAsync();
 
-    public async Task<PractionerDto?> RegisterUser(Practitioner practitionerDto) {
+    public async Task<PractitionerDto?> GetPractionerById(long id) {
+        var practioner = await _context.Practitioners
+                .FirstOrDefaultAsync(user => user.Id == id);
+
+            if (practioner == null)
+            {
+                return null;
+            }
+            return mapPractitionerToDto(practioner);
+    }
+
+    public async Task<PractitionerDto?> RegisterUser(Practitioner practitionerDto) {
         var existingPractioner = await _context.Practitioners.Where(prac => prac.Email == practitionerDto.Email).FirstOrDefaultAsync();
 
         if (existingPractioner != null) {
@@ -37,80 +45,49 @@ public class PractitionerService {
         await _context.AddAsync(newPractitioner);
         await _context.SaveChangesAsync();
 
-        PractionerDto newPractitionerDto = new PractionerDto {
-            Id = newPractitioner.Id,
-            FirstName = newPractitioner.FirstName,
-            LastName = newPractitioner.LastName,
-            Email = newPractitioner.Email,
-            StartDate = newPractitioner.StartDate,
-            Earnings = newPractitioner.Earnings,
-            Address = newPractitioner.Address,
-            Latitude = newPractitioner.Latitude,
-            Longitude = newPractitioner.Longitude,
-        };
-
-        return newPractitionerDto;
+        return mapPractitionerToDto(newPractitioner);
     }
 
-    public async Task<PractionerDto?> Login(LoginDto credentials) {
+    public async Task<PractitionerDto?> Login(LoginDto credentials) {
         var practioner = await _context.Practitioners.SingleAsync(prac => prac.Email == credentials.Email);
         if (practioner == null) {
-            return null; //figure out how to do this
+            return null;
         };
         bool verifiedPassword = BCrypt.Net.BCrypt.Verify(credentials.Password, practioner.Password);
         if (!verifiedPassword) {
             return null;
         }
-        PractionerDto practionerDto = new PractionerDto {
-            Id = practioner.Id,
-            FirstName = practioner.FirstName,
-            LastName = practioner.LastName,
-            Email = practioner.Email,
-            StartDate = practioner.StartDate,
-            Earnings = practioner.Earnings,
-            Address = practioner.Address,
-            Latitude = practioner.Latitude,
-            Longitude = practioner.Longitude,
-        };
-        return practionerDto;
+        return mapPractitionerToDto(practioner);
     }
 
-    public async Task<PractionerDto?> UpdateUser(Practitioner practionerData) {
+    public async Task<PractitionerDto?> UpdateUser(Practitioner practionerData) {
         _context.Practitioners.Update(practionerData);
         await _context.SaveChangesAsync();
 
-        PractionerDto practionerDto = new PractionerDto {
-            Id = practionerData.Id,
-            FirstName = practionerData.FirstName,
-            LastName = practionerData.LastName,
-            Email = practionerData.Email,
-            StartDate = practionerData.StartDate,
-            Earnings = practionerData.Earnings,
-            Address = practionerData.Address,
-            Latitude = practionerData.Latitude,
-            Longitude = practionerData.Longitude,
-        };
-
-        return practionerDto;
+        return mapPractitionerToDto(practionerData);
     }
 
-    public async Task<PractionerDto?> DeleteUser(long id) {
+    public async Task<PractitionerDto?> DeleteUser(long id) {
         var practioner = await _context.Practitioners.SingleAsync(prac => prac.Id == id);
         _context.Practitioners.Remove(practioner);
         await _context.SaveChangesAsync();
 
-        PractionerDto practionerDto = new PractionerDto {
-            Id = practioner.Id,
-            FirstName = practioner.FirstName,
-            LastName = practioner.LastName,
-            Email = practioner.Email,
-            StartDate = practioner.StartDate,
-            Earnings = practioner.Earnings,
-            Address = practioner.Address,
-            Latitude = practioner.Latitude,
-            Longitude = practioner.Longitude,
-        };
+        return mapPractitionerToDto(practioner);
+    }
 
-        return practionerDto;
+
+    public PractitionerDto mapPractitionerToDto(Practitioner practitioner) {
+        PractitionerDto practitionerDto = new PractitionerDto {
+            Id = practitioner.Id,
+            FirstName = practitioner.FirstName,
+            LastName = practitioner.LastName,
+            Email = practitioner.Email,
+            StartDate = practitioner.StartDate,
+            Earnings = practitioner.Earnings,
+            Address = practitioner.Address,
+            Latitude = practitioner.Latitude,
+            Longitude = practitioner.Longitude,
+        };
+        return practitionerDto;
     }
 }

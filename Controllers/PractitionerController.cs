@@ -21,12 +21,16 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Practitioner>> GetPractionerById() {
-        throw new NotImplementedException();
+    public async Task<ActionResult<PractitionerDto>> GetPractionerById(long id) {
+        var result = await practitionerService.GetPractionerById(id);
+        if (result == null) {
+            return BadRequest();
+        }
+        return Ok(result);
     }
 
     [HttpPost("/login")]
-    public async Task<ActionResult<PractionerDto>> LoginUser([FromBody] LoginDto loginCredentials) {
+    public async Task<ActionResult<PractitionerDto>> LoginUser([FromBody] LoginDto loginCredentials) {
         var result = await practitionerService.Login(loginCredentials);
         if (result == null) {
             return Unauthorized();
@@ -35,7 +39,7 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPost("/register")]
-    public async Task<ActionResult<PractionerDto>> CreateUser([FromBody] Practitioner practitioner) {
+    public async Task<ActionResult<PractitionerDto>> CreateUser([FromBody] Practitioner practitioner) {
         var result = await practitionerService.RegisterUser(practitioner);
         if (result == null) {
             return BadRequest();
@@ -44,7 +48,7 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPut]
-    public async Task<ActionResult<PractionerDto>> UpdateUser([FromBody] Practitioner practitioner) {
+    public async Task<ActionResult<PractitionerDto>> UpdateUser([FromBody] Practitioner practitioner) {
         var result = await practitionerService.UpdateUser(practitioner);
         if (result == null) {
             return BadRequest();
