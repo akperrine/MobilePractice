@@ -21,8 +21,8 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<PractitionerDto>> GetPractionerById(long id) {
-        var result = await practitionerService.GetPractionerById(id);
+    public async Task<ActionResult<PractitionerDto>> GetPractitionerById(long id) {
+        var result = await practitionerService.GetPractitionerById(id);
         if (result == null) {
             return BadRequest();
         }
@@ -30,7 +30,7 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPost("/login")]
-    public async Task<ActionResult<PractitionerDto>> LoginUser([FromBody] LoginDto loginCredentials) {
+    public async Task<ActionResult<PractitionerDto>> LoginPractitioner([FromBody] LoginDto loginCredentials) {
         var result = await practitionerService.Login(loginCredentials);
         if (result == null) {
             return Unauthorized();
@@ -39,8 +39,8 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPost("/register")]
-    public async Task<ActionResult<PractitionerDto>> CreateUser([FromBody] Practitioner practitioner) {
-        var result = await practitionerService.RegisterUser(practitioner);
+    public async Task<ActionResult<PractitionerDto>> CreatePractitioner([FromBody] Practitioner practitioner) {
+        var result = await practitionerService.RegisterPractitioner(practitioner);
         if (result == null) {
             return BadRequest();
         }
@@ -48,8 +48,8 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPut]
-    public async Task<ActionResult<PractitionerDto>> UpdateUser([FromBody] Practitioner practitioner) {
-        var result = await practitionerService.UpdateUser(practitioner);
+    public async Task<ActionResult<PractitionerDto>> UpdatePractitioner([FromBody] Practitioner practitioner) {
+        var result = await practitionerService.UpdatePractitioner(practitioner);
         if (result == null) {
             return BadRequest();
         }
@@ -57,8 +57,8 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Practitioner>> DeleteUser(long id) {
-        var result = await practitionerService.DeleteUser(id);
+    public async Task<ActionResult<Practitioner>> DeletePractitioner(long id) {
+        var result = await practitionerService.DeletePractitioner(id);
         if (result == null) {
             return BadRequest();
         }

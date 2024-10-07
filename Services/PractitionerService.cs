@@ -15,9 +15,9 @@ public class PractitionerService {
 
     public async Task<List<Practitioner>> GetAll() => await _context.Practitioners.ToListAsync();
 
-    public async Task<PractitionerDto?> GetPractionerById(long id) {
+    public async Task<PractitionerDto?> GetPractitionerById(long id) {
         var practioner = await _context.Practitioners
-                .FirstOrDefaultAsync(user => user.Id == id);
+                .FirstOrDefaultAsync(Practitioner => Practitioner.Id == id);
 
             if (practioner == null)
             {
@@ -26,7 +26,7 @@ public class PractitionerService {
             return mapPractitionerToDto(practioner);
     }
 
-    public async Task<PractitionerDto?> RegisterUser(Practitioner practitionerDto) {
+    public async Task<PractitionerDto?> RegisterPractitioner(Practitioner practitionerDto) {
         var existingPractioner = await _context.Practitioners.Where(prac => prac.Email == practitionerDto.Email).FirstOrDefaultAsync();
 
         if (existingPractioner != null) {
@@ -60,14 +60,14 @@ public class PractitionerService {
         return mapPractitionerToDto(practioner);
     }
 
-    public async Task<PractitionerDto?> UpdateUser(Practitioner practionerData) {
+    public async Task<PractitionerDto?> UpdatePractitioner(Practitioner practionerData) {
         _context.Practitioners.Update(practionerData);
         await _context.SaveChangesAsync();
 
         return mapPractitionerToDto(practionerData);
     }
 
-    public async Task<PractitionerDto?> DeleteUser(long id) {
+    public async Task<PractitionerDto?> DeletePractitioner(long id) {
         var practioner = await _context.Practitioners.SingleAsync(prac => prac.Id == id);
         _context.Practitioners.Remove(practioner);
         await _context.SaveChangesAsync();
