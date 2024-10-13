@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace MobilePractice.Models;
 
 public class Practitioner {

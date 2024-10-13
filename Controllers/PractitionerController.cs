@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MobilePractice.Dtos;
 using MobilePractice.Models;
@@ -10,9 +11,12 @@ namespace MobilePractice.Controllers;
 [Route("api/[controller]")]
 public class PractitionerController : ControllerBase {
     
+    JwtService jwtService;
+
     PractitionerService practitionerService;
-    public PractitionerController(PractitionerService service) {
+    public PractitionerController(PractitionerService service, JwtService aJwtService) {
         practitionerService = service;
+        jwtService = aJwtService;
     }
 
     [HttpGet]
@@ -20,6 +24,7 @@ public class PractitionerController : ControllerBase {
          return await practitionerService.GetAll();
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<PractitionerDto>> GetPractitionerById(long id) {
         var result = await practitionerService.GetPractitionerById(id);
@@ -35,7 +40,8 @@ public class PractitionerController : ControllerBase {
         if (result == null) {
             return Unauthorized();
         }
-        return Ok(result);
+        var token = jwtService.GenerateToken(result);
+        return Ok(new {token = token});
     }
 
     [HttpPost("/register")]
