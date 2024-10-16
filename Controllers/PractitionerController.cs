@@ -35,13 +35,16 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpPost("/login")]
-    public async Task<ActionResult<PractitionerDto>> LoginPractitioner([FromBody] LoginDto loginCredentials) {
+    public async Task<ActionResult<LoginResponseDto>> LoginPractitioner([FromBody] LoginDto loginCredentials) {
         var result = await practitionerService.Login(loginCredentials);
         if (result == null) {
             return Unauthorized();
         }
         var token = jwtService.GenerateToken(result);
-        return Ok(new {token = token});
+        return Ok(new LoginResponseDto{
+            Data = result,
+            Token = token
+        });
     }
 
     [HttpPost("/register")]
