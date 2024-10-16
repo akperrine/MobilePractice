@@ -15,6 +15,7 @@ builder.Services.AddDbContext<PracticeContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
 builder.Services.AddScoped<PractitionerService>();
+builder.Services.AddScoped<TreatmentService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddSwaggerGen(options =>
 {

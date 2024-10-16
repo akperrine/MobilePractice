@@ -30,13 +30,12 @@ public class TreatmentService {
             return null;
         };
         DateTime timestamp = DateTime.UtcNow;
-        Treatment newTreatment = new Treatment {
-            // TODO()
-        };
+        Treatment newTreatment = treatment;
+
         await _context.AddAsync(newTreatment);
         await _context.SaveChangesAsync();
 
-        return treatment;
+        return newTreatment;
     }
 
     public async Task<Treatment?> UpdateTreatment(Treatment treatment) {
