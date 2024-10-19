@@ -12,7 +12,7 @@ public class ClientService {
 
     public async Task<List<Client>> GetAll() => await _context.Clients.ToListAsync();
 
-    public async Task<Client?> GetTreatmentById(long id) {
+    public async Task<Client?> GetClientById(long id) {
         var client = await _context.Clients
                 .FirstOrDefaultAsync(t => t.Id == id);
 
