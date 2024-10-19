@@ -28,7 +28,7 @@ public class TreatmentController : ControllerBase {
         return Ok(result);
     }
 
-    [HttpPost("/create")]
+    [HttpPost("create")]
     public async Task<ActionResult<Treatment>> CreateTreatment([FromBody] Treatment treatment) {
         var result = await treatmentService.CreateTreatment(treatment);
         if (result == null) {

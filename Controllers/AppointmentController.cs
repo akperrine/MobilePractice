@@ -28,7 +28,7 @@ public class AppointmentController : ControllerBase {
         return Ok(result);
     }
 
-    [HttpPost("/create")]
+    [HttpPost("create")]
     public async Task<ActionResult<Appointment>> CreateAppointment([FromBody] Appointment appointment) {
         var result = await AppointmentService.CreateAppointment(appointment);
         if (result == null) {

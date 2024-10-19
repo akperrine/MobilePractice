@@ -27,7 +27,7 @@ public class ClientController : ControllerBase {
         return Ok(result);
     }
 
-    [HttpPost("/create")]
+    [HttpPost("create")]
     public async Task<ActionResult<Client>> CreateClient([FromBody] Client client) {
         var result = await clientService.CreateClient(client);
         if (result == null) {
