@@ -17,6 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<PractitionerService>();
 builder.Services.AddScoped<TreatmentService>();
 builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddSwaggerGen(options =>
 {
