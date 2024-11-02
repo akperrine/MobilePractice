@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MobilePractice.Migrations
 {
     /// <inheritdoc />
-    public partial class InitModelscorrect : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,7 +49,28 @@ namespace MobilePractice.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Practitioners",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Earnings = table.Column<int>(type: "integer", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    Latitude = table.Column<float>(type: "real", nullable: false),
+                    Longitude = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Practitioners", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Treatments",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -60,7 +81,7 @@ namespace MobilePractice.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_Treatments", x => x.Id);
                 });
         }
 
@@ -74,7 +95,10 @@ namespace MobilePractice.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "Services");
+                name: "Practitioners");
+
+            migrationBuilder.DropTable(
+                name: "Treatments");
         }
     }
 }

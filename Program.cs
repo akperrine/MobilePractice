@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -21,42 +22,60 @@ builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
+    // ## USE THIS FOR JWT BEARER Setup with SWAGGER-UI 
+    // options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    // {
+    //     Name = "Authorization",
+    //     In = ParameterLocation.Header,
+    //     Type = SecuritySchemeType.ApiKey,
+    //     Scheme = "Bearer"
+    // });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+    // options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    // {
+    //     {
+    //         new OpenApiSecurityScheme
+    //         {
+    //             Reference = new OpenApiReference
+    //             {
+    //                 Type = ReferenceType.SecurityScheme,
+    //                 Id = "Bearer"
+    //             }
+    //         },
+    //         Array.Empty<string>()
+    //     }
+    // });
 });
+
+//  ** Authentication if using Bearer Tokens
+// builder.Services.AddAuthentication().AddJwtBearer(options => {
+//     options.TokenValidationParameters = new TokenValidationParameters {
+//         ValidateIssuer = false,
+//         ValidateAudience = false,
+//         ValidateLifetime = true,
+//         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"])),
+//         ValidateIssuerSigningKey = true,
+//         // ValidIssuer = builder.Configuration["Jwt:Issuer"],
+//         // ValidAudience = builder.Configuration["Jwt:Audience"],
+//     };
+// });
+
 builder.Services.AddAuthorization();
-
-builder.Services.AddAuthentication().AddJwtBearer(options => {
-    options.TokenValidationParameters = new TokenValidationParameters {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"])),
-        ValidateIssuerSigningKey = true,
-        // ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        // ValidAudience = builder.Configuration["Jwt:Audience"],
-    };
-});
+builder.Services.AddAuthentication().AddCookie(options =>
+            {
+                options.Cookie.Name = "Api.Cookies";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.SlidingExpiration = true;
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+            
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,6 +88,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 
 app.MapControllers();

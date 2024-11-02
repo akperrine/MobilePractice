@@ -1,4 +1,7 @@
 
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MobilePractice.Dtos;
@@ -20,6 +23,7 @@ public class PractitionerController : ControllerBase {
     }
 
     [HttpGet]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public async Task<ActionResult<List<Practitioner>>> GetAllPractitioners() {
          return await practitionerService.GetAll();
     }
@@ -41,6 +45,13 @@ public class PractitionerController : ControllerBase {
             return Unauthorized();
         }
         var token = jwtService.GenerateToken(result);
+          var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, loginCredentials.Email)
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, "Login");
+ 
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
         return Ok(new LoginResponseDto{
             Data = result,
             Token = token
